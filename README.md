@@ -1,1 +1,1 @@
-# stripeboard
+# Ribboard
