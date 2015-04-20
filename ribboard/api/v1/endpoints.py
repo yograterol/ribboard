@@ -3,7 +3,7 @@ import falcon
 import json
 import stripe
 
-from engine.stripe_charge import validate_charge_input, charge
+from engine.stripe_charge import ChargeUtilities, validate_charge_input
 
 
 class Charge(object):
@@ -18,10 +18,10 @@ class Charge(object):
     def on_post(self, req, res):
         data = req.context.get('doc')
         try:
-            result = charge(data)
+            result = ChargeUtilities.charge(data)
         except (stripe.InvalidRequestError) as e:
             raise falcon.HTTPBadRequest(
-                'Stripe error',
+                'Stripe error.',
                 e.message
             )
         res.status = falcon.HTTP_200

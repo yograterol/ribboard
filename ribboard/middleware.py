@@ -24,11 +24,7 @@ class JSONRequired(object):
 class JSONDecoder(object):
 
     def process_request(self, req, res):
-        if not req.method in ('POST', 'PUT') or \
-                not req.content_length:
-            return
-
-        if not req.content_length:
+        if not req.method in ('POST', 'PUT'):
             return
 
         body = req.stream.read()
@@ -39,7 +35,9 @@ class JSONDecoder(object):
 
         try:
             req.context['doc'] = json.loads(body.decode('utf-8'))
-
+            if not req.context['doc'].keys():
+                raise falcon.HTTPBadRequest('Empty JSON document.',
+                                            'A valid JSON document is required.')
         except (ValueError, UnicodeDecodeError):
             raise falcon.HTTPError(falcon.HTTP_753,
                                    'Malformed JSON',

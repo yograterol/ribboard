@@ -10,4 +10,4 @@ app = falcon.API(middleware=[
     JSONDecoder()
 ])
 
-app.add_route('/', Charge())
+app.add_route('/charge', Charge())
